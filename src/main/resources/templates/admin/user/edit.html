@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="~{fragments/head::head('Редактирование пользователя')}"></head>
+<body>
+    <div class="container">
+        <div th:replace="~{fragments/header::header}"></div>
+    <br/>
+    <br/>
+    <br/>
+        <br/>
+        <form th:action="@{/admin/user/edit/} + ${user.id}" method="post" th:object="${user}">
+            <div class="form-group row align-items-center col-12">
+                <div class="col-3"></div>
+                <div class="col-2">
+                    <label for="username"
+                           class="col-2 col-form-label col-form-label-lg">Имя пользователя
+                    </label>
+                </div>
+                <div class="col-4">
+                    <input type="text"
+                           id="username"
+                           th:field="*{username}"
+                           class="form-control form-control-lg form-control-plaintext"
+                           readonly>
+                </div>
+                <div class="col-3"></div>
+            </div>
+
+            <input type="hidden" th:field="*{password}">
+
+
+            <div class="form-group row align-items-center col-12">
+                <div class="col-3"></div>
+                <div class="col-2">
+                    <label for="email"
+                           class="col-2 col-form-label col-form-label-lg">email
+                    </label>
+                </div>
+                <div class="col-4">
+                    <input type="email"
+                           id="email"
+                           th:field="*{email}"
+                           th:class="${errors.containsKey('email')
+                           ? 'form-control form-control-lg is-invalid'
+                           : 'form-control form-control-lg'}"
+                           placeholder="Введите email"/>
+                    <ul th:if="${errors.containsKey('email')}">
+                        <li th:each="error : ${errors.get('email')}" th:text="${error}" style="color: darkred"></li>
+                    </ul>
+                </div>
+                <div class="col-3"></div>
+            </div>
+
+            <div class="form-group row align-content-center col-12">
+                <div class="col-3"></div>
+                <div class="col-2 form-control-lg">Роли пользователя</div>
+                <div class="col-4">
+                    <div class="custom-control custom-switch" th:each="role : ${roles}">
+                        <input th:id="${role}"
+                               type="checkbox"
+                               class="custom-control-input"
+                               th:disabled="${role.name} == 'Официант'"
+                               th:field="*{stringRoles}"
+                               th:value="${role}"/>
+                        <label th:for="${role}"
+                               class="custom-control-label form-control-lg"
+                               th:text="${role.name}">
+                        </label>
+                    </div>
+                </div>
+                <div class="col-3"></div>
+            </div>
+
+            <div class="form-group row align-items-center col-12">
+                <div class="col-3"></div>
+                <div class="col-3">
+                    <button type="submit" class="btn btn-dark btn-lg col-12">Сохранить</button>
+                </div>
+                <div class="col-3">
+                    <a th:href="@{/admin/user/start/}" class="btn btn-secondary btn-lg col-12" role="button">Назад</a>
+                </div>
+                <div class="col-3"></div>
+            </div>
+        </form>
+        <div th:replace="~{fragments/js-connect::js-connect}"></div>
+    </div>
+</body>
